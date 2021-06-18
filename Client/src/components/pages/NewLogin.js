@@ -1,5 +1,5 @@
-
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import { Grid, Row, Col, Container } from "rsuite";
 import { SocialIcon } from "react-social-icons";
@@ -9,16 +9,16 @@ import Bg2 from "../../img/bg2.png";
 import Mobile from "../../img/mobile.svg";
 
 export default function NewLogin() {
-
+  const History = useHistory();
   const [fnameReg, setFnameReg] = useState("");
   const [lnameReg, setLnameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
+  const [cpasswordReg, setCPasswordReg] = useState("");
   const [emailReg, setEmailReg] = useState("");
-  // const [genderReg, setGenderReg] = useState("");
+  const [genderReg, setGenderReg] = useState("");
   const [mobileReg, setMobileReg] = useState("");
 
-
-
+  const [loginStatus, setLoginStatus] = useState("");
 
   Axios.defaults.withCredentials = true;
 
@@ -26,20 +26,21 @@ export default function NewLogin() {
     Axios.post("http://localhost:3001/register", {
       firstname: fnameReg,
       lastname: lnameReg,
-      password: passwordReg,  
+      password: passwordReg,
+      cpassword: cpasswordReg,
       email: emailReg,
       mobile: mobileReg,
-      // gender: genderReg,
+      gender: genderReg,
     }).then((response) => {
-      console.log(response);
+      if (response.data.message) {
+        setLoginStatus(response.data.message);
+        console.log("email");
+      } else {
+        History.push("/home");
+      }
     });
   };
 
-
-
-
-
-  
   return (
     <div className="radgrad">
       <img className="radgrad" src={Bg2} alt="bg2" />
@@ -50,7 +51,6 @@ export default function NewLogin() {
         <img src={Mobile} alt="mobile" />
       </div>
       <div className="divalt3" position="absolute">
-     
         <br />
         <Container>
           <Grid>
@@ -58,26 +58,28 @@ export default function NewLogin() {
               Register
             </h2>
             <Row className="show-grid pt-2 row1">
-              <Col className=" pt-2 " xs={12}>
+              <Col xs={12}>
                 <TextField
+                  input="true"
                   required
                   size="small"
                   className="textf"
-                  // id="outlined-basic"
                   label="First Name"
                   variant="outlined"
                   type="text"
+                  helperText="Min 3 character"
                   onChange={(e) => {
                     setFnameReg(e.target.value);
                   }}
                 />
                 <TextField
+                  input="true"
                   required
                   size="small"
-                  // id="outlined-basic"
                   label="Last Name"
                   variant="outlined"
                   type="text"
+                  helperText="Min 3 character"
                   onChange={(e) => {
                     setLnameReg(e.target.value);
                   }}
@@ -85,48 +87,55 @@ export default function NewLogin() {
               </Col>
             </Row>
             <Row className="show-grid pt-3 row1">
-              <Col className="pt-1" xs={12}>
+              <Col xs={12}>
                 <TextField
-                  required
+                  input="true"
                   size="small"
                   className="textf"
-                  // id="outlined-basic"
                   label="Password"
                   variant="outlined"
                   type="password"
+                  helperText="Min 8 Character"
                   onChange={(e) => {
                     setPasswordReg(e.target.value);
                   }}
                 />
                 <TextField
+                  input="true"
                   required
                   size="small"
-                  // id="outlined-basic"
+                  type="password"
                   label="Confirm Password"
                   variant="outlined"
+                  helperText="Same as Password"
+                  onChange={(e) => {
+                    setCPasswordReg(e.target.value);
+                  }}
                 />
               </Col>
             </Row>
             <Row className="show-grid pt-3 row1">
-              <Col className="pt-1" xs={12}>
+              <Col xs={12}>
                 <TextField
+                  input="true"
                   required
                   size="small"
                   className="textf"
-                  // id="outlined-basic"
                   label="Email Id"
                   variant="outlined"
                   type="text"
+                  helperText="Must contain Valid email"
                   onChange={(e) => {
                     setEmailReg(e.target.value);
                   }}
                 />
                 <TextField
+                  input="true"
                   required
                   size="small"
-                  // id="outlined-basic"
                   label="Mobile Number"
                   variant="outlined"
+                  helperText="Enter Valid Number"
                   onChange={(e) => {
                     setMobileReg(e.target.value);
                   }}
@@ -134,21 +143,17 @@ export default function NewLogin() {
               </Col>
               <Col className="pt-1" xs={12}>
                 <br />
-                <div className="radiobt">
-                  <input type="radio" id="male" name="gender" value="male" />
+                <div
+                  onChange={(e) => {
+                    setGenderReg(e.target.value);
+                  }}
+                  className="radiobt"
+                >
+                  <input type="radio" name="gender" value="male" />
                   <label className="lab" htmlFor="male">
                     Male
                   </label>
-                  <br />
-                  <input
-                    type="radio"
-                    // id="female"
-                    name="gender"
-                    value="female"
-                    // onChange={(e) => {
-                    //   setGenderReg(e.target.value);
-                    // }}
-                  />
+                  <input type="radio" name="gender" value="female" />
                   <label className="lab" htmlFor="female">
                     Female
                   </label>
@@ -157,36 +162,36 @@ export default function NewLogin() {
             </Row>
           </Grid>
         </Container>
+        F
+        <div className="infotxt">
+          <h6 className="text-red">{loginStatus}</h6>
+        </div>
         <div className="radio">
-          <button onClick={register} className="btn5" bold="true" >
+          <button onClick={register} className="btn5" bold="true">
             {" "}
             Register{" "}
           </button>
-
-          </div>
-          <div className="iconsocial">
-            <h5 className="signintext">or Sign in with</h5>
-            <SocialIcon
-              className="socialicon1"
-              url="https://twitter.com/jaketrent"
-            />
-            <SocialIcon
-              className="socialicon1"
-              url="https://linkedin.com/in/jaketrent"
-            />
-            <SocialIcon
-              className="socialicon1"
-              url="https://facebook.com/in/jaketrent"
-            />
-            <SocialIcon
-              className="socialicon1"
-              url="https://google.com/in/jaketrent"
-            />
-          </div>
+        </div>
+        <div className="iconsocial">
+          <h5 className="signintext">or Sign in with</h5>
+          <SocialIcon
+            className="socialicon1"
+            url="https://twitter.com/jaketrent"
+          />
+          <SocialIcon
+            className="socialicon1"
+            url="https://linkedin.com/in/jaketrent"
+          />
+          <SocialIcon
+            className="socialicon1"
+            url="https://facebook.com/in/jaketrent"
+          />
+          <SocialIcon
+            className="socialicon1"
+            url="https://google.com/in/jaketrent"
+          />
         </div>
       </div>
-   
+    </div>
   );
-};
-
-
+}

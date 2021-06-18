@@ -236,6 +236,11 @@ $indent_3: 15px;
   padding-top: $indent_2;
   color: black;
 }
+.pt-21 {
+  padding-top: $indent_2;
+  padding-left: 20px;
+  color: black;
+}
 
 .pt-3 {
   padding-top: $indent_3;
@@ -429,11 +434,17 @@ margin-top: 40px;
 }
 .row1 {
   margin-left: 120px;
-  margin-top: 10px;
+  margin-top: 1px;
   color: black;
 }
 .col1 {
   margin-top: 30px;
+}
+.textl {
+  margin-right: 30px !important ;
+width: 400px;
+  border: 0;
+  padding: 2px !important ;
 }
 
 .textf {
@@ -512,4 +523,7 @@ color:rgba(255, 255, 255, 0.747)
 top: 200px;
   position: relative;
 
+}
+.modal {
+  position: absolute;
 }
